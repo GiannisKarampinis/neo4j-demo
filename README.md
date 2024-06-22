@@ -31,8 +31,6 @@ This repository contains instructions and files to set up a Neo4j environment us
 <br>
 <br>
 <br>
-<br>
-<br>
 
 # 1st Set of Neo4j Cypher Queries
 
@@ -233,8 +231,6 @@ This repository contains instructions and files to set up a Neo4j environment us
 <br>
 <br>
 <br>
-<br>
-<br>
 
 # 2nd Set of Neo4j Cypher Queries
 
@@ -354,8 +350,6 @@ This repository contains instructions and files to set up a Neo4j environment us
     <br>
     <br>
     <br>
-    <br>
-    <br>
 
 # Graph Design
 
@@ -370,5 +364,9 @@ STATS(<u>player</u>, <u>home</u>, <u>visitors</u>, points, assists, rebounds) <b
 ![Graph](resources/graph_2.svg)
 
 <br>
-<br>
+<p align = "justify">
 The PARTICIPATES_IN relationship can have properties or attributes that specify whether the team is the home or away team in the game. This can be represented by a property on the relationship itself, such as role: 'home' or role: 'away'. Using a single relationship type (PARTICIPATES_IN) simplifies the graph structure and query patterns. It avoids redundancy and makes the graph more intuitive to understand. You can of course, still distinguish between home and away teams by querying the properties of the PARTICIPATES_IN relationship. This allows you to perform specific queries based on the role of the team in each game. Using a single relationship type with properties to denote roles (like home or away) is a common and effective approach in property graph databases. It maintains simplicity while providing the necessary flexibility to capture different roles or states between connected nodes.
+</p>
+<br>
+
+## B. Design the properties' Graph for the following relational Schema
