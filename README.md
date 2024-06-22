@@ -347,6 +347,24 @@ This repository contains instructions and files to set up a Neo4j environment us
 
 15. **Find the shortest path between all pairs of customers, for customers with names (contactName) starting with 'S'. Display the pairs and the length of the path, starting from the shortest path to the longest.**
 
-    ```cypher
+        ```cypher
 
-    ```
+        ```
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+# Graph Design
+
+## A. Design the properties' Graph for the following relational Schema
+
+PLAYER(<u>code</u>, name, position, height, weight, _team_) <br>
+TEAM(<u>name</u>, city) <br>
+GAME(<u>home</u>, <u>visitor</u>, home_points, visitor_points, match_date) <br>
+STATS(<u>player</u>, <u>home</u>, <u>visitors</u>, points, assists, rebounds) <br>
+<br>
+<br>
+![Graph](resources/graph_2.svg)
