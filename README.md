@@ -26,11 +26,15 @@ This repository contains instructions and files to set up a Neo4j environment us
    Open a web browser and go to http://localhost:7474
 
 5. **Initialize Database**
-   Execute :play movies and run the 2nd command for initializing the database
+   Execute :play movies (1st Set of queries) or :play northwind-graph (2nd set of queries)
 
-6. **Run the queries**
+<br>
+<br>
+<br>
+<br>
+<br>
 
-# Neo4j Cypher Queries
+# 1st Set of Neo4j Cypher Queries
 
 1. **Find actors who have acted in movies released after 2000 and whose name starts with "M" or played the role of "Neo":**
 
@@ -226,6 +230,10 @@ This repository contains instructions and files to set up a Neo4j environment us
     RETURN p.name, COUNT(*), COLLECT(m.title)
     ```
 
-```
+<br>
+<br>
+<br>
+<br>
+<br>
 
-```
+# 2nd Set of Neo4j Cypher Queries
