@@ -237,3 +237,110 @@ This repository contains instructions and files to set up a Neo4j environment us
 <br>
 
 # 2nd Set of Neo4j Cypher Queries
+
+1. **Find the names and descriptions of product categories with suppliers from both the USA and the UK:**
+
+   ```cypher
+   MATCH (s1:Supplier {country: "USA"})-->(:Product)-->(c:Category), (s2:Supplier {country: "UK"})-->(:Product)-->(c:Category)
+   RETURN DISTINCT c.categoryName AS CategoryName, c.description AS Description
+   ```
+
+   ```cypher
+   MATCH (s1:Supplier {country: "USA"})-->(:Product)-->(c:Category)<--(:Product)<--(s2:Supplier {country: "UK"})
+   RETURN DISTINCT c.categoryName AS CategoryName, c.description AS Description
+   ```
+
+2. **Find the names of products whose names start with 'C' or end with 't' and have at least one order with a discount greater than 25% (0.25).**
+
+   ```cypher
+   MATCH (p:Product)<-[r:ORDERS]-(o:Order)
+   WHERE ((p.productName STARTS WITH "C" OR p.productName ENDS WITH "t") AND (toFloat(r.discount) > 0.25))
+   RETURN DISTINCT p.productName
+   ```
+
+3. **Find the products and, if they have, the categories to which they belong, for all products supplied by suppliers who also supply "Tofu".**
+
+   ```cypher
+   MATCH (s:Supplier)-[:SUPPLIES]->(p:Product)
+   WHERE (s)-[:SUPPLIES]->(:Product {productName: "Tofu"})
+   OPTIONAL MATCH (p)-[:PART_OF]->(cat:Category)
+   RETURN p.productName AS ProductName, COLLECT(DISTINCT cat.categoryName) AS Categories
+   ```
+
+4. **Find customers (name) who have not bought "Chai" and have bought "Tofu" and are from either the UK or Germany.**
+
+   ```cypher
+   MATCH (c:Customer)-[:PURCHASED]->(o:Order)-[r:ORDERS]->(p:Product {productName: "Tofu"})
+   WHERE (c.country = "UK" OR c.country = "Germany")
+        AND NOT EXISTS ((c:Customer)-[:PURCHASED]->(o:Order)-[r:ORDERS]->(p:Product {productName: "Chai"}))
+   RETURN DISTINCT c.contactName
+   ```
+
+5. **Find the 5 customers with the highest number of orders. Display the customers' names sorted from the one with the highest number to the one with the lowest.**
+
+   ```cypher
+   MATCH (c:Customer)-[r:PURCHASED]->(o:Order) WITH c, COUNT(o) As numOrders RETURN c.contactName, numOrders ORDER BY numOrders DESC LIMIT 5
+   ```
+
+6. **Find customers who have no orders.**
+
+   ```cypher
+   MATCH (c:Customer) WHERE NOT EXISTS ((c:Customer)-[:PURCHASED]->(:Order)) RETURN DISTINCT c.contactName
+   ```
+
+7. **Find the customer (contactName), the date, and all the products (as a list) of the oldest order.**
+
+   ```cypher
+   MATCH ((c:Customer)-[:PURCHASED]->(o:Order)-[:ORDERS]->(p:Product)) WITH c, o, p ORDER BY o.orderDate LIMIT 1 RETURN o.orderDate, c.contactName, collect(p.productName)
+   ```
+
+8. **For each supplier, find the number of products they provide per category.**
+
+   ```cypher
+   MATCH (s:Supplier)-[:SUPPLIES]->(p:Product)-[:PART_OF]->(c:Category) RETURN s.companyName, c.categoryName, COUNT (*) AS numProducts
+   ```
+
+9. **Find the name (contactName) of customers and the number of their orders, for customers who have at least 10 orders with products in the 'Seafood' category.**
+
+   ```cypher
+   MATCH (c:Customer)-[:PURCHASED]->(o:Order)-[:ORDERS]->(p:Product)-[:PART_OF]-(cat:Category {categoryName: "Seafood"})
+   WITH c, cat, COUNT (o) AS numOrders
+   WHERE numOrders > 10
+   RETURN c.contactName, sum(numOrders)
+   ```
+
+10. **For each category with more than 10 products, find its name and the number of orders involving its products, starting with the category with the most products to the one with the least.**
+
+    ```cypher
+
+    ```
+
+11. **Find the number of products supplied by each country.**
+
+    ```cypher
+    MATCH (s:Supplier)-[:SUPPLIES]->(p:Product) RETURN s.country, COUNT (p) AS nProducts
+    ```
+
+12. **Find the pair of customers whose orders include the most different common products. Display the number of products as well.**
+
+    ```cypher
+
+    ```
+
+13. **Find the products that appear together in at least 3 orders.**
+
+    ```cypher
+
+    ```
+
+14. **Find the paths between all suppliers in Germany with a length of up to 4.**
+
+    ```cypher
+
+    ```
+
+15. **Find the shortest path between all pairs of customers, for customers with names (contactName) starting with 'S'. Display the pairs and the length of the path, starting from the shortest path to the longest.**
+
+    ```cypher
+
+    ```
