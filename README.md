@@ -48,6 +48,14 @@ This repository contains instructions and files to set up a Neo4j environment us
    RETURN p.name, m.title
    ```
 
+   ```cypher
+   MATCH (p:Person)-[:ACTED_IN]->(m:Movie)<-[:DIRECTED]-(p:Person) RETURN p.name, m.title
+   ```
+
+   ```cypher
+   MATCH (p:Person)-[:ACTED_IN]->(m:Movie), (p)-[:DIRECTED]->(m) RETURN p.name, m.title
+   ```
+
 3. **Find directors who have never acted in any movie:**
 
    ```cypher
@@ -56,11 +64,24 @@ This repository contains instructions and files to set up a Neo4j environment us
    RETURN DISTINCT p.name
    ```
 
+   ```cypher
+   MATCH (p:Person)-[:DIRECTED]->(m:Movie)
+   WHERE NOT (p)-[:ACTED_IN]->(:Movie)
+   RETURN DISTINCT p
+   ```
+
 4. **Display the number of movies each actor who acted in "The Matrix" has played in, sorted in descending order:**
 
    ```cypher
    MATCH (:Movie { title: "The Matrix" })<-[:ACTED_IN]-(actor)-[:ACTED_IN]->(movie)
    RETURN actor.name, COUNT(*) AS count
+   ORDER BY count DESC
+   ```
+
+   ```cypher
+   MATCH (p:Person)-[:ACTED_IN]->(:Movie {title: "The Matrix"}),
+   (p)-[:ACTED_IN]->(m:Movie)
+   RETURN p.name, COUNT(*) AS count
    ORDER BY count DESC
    ```
 
@@ -82,6 +103,10 @@ This repository contains instructions and files to set up a Neo4j environment us
    LIMIT 1
    ```
 
+   ```cypher
+   MATCH (p:Person)-[:ACTED_IN]->(m:Movie) RETURN m.title, COUNT (*) AS cnt ORDER BY cnt DESC LIMIT 1
+   ```
+
 7. **Actors who have acted in "Snow Falling on Cedars" or "The Green Mile", including the movies they acted in:**
 
    ```cypher
@@ -93,7 +118,7 @@ This repository contains instructions and files to set up a Neo4j environment us
 8. **Movies in which both Keanu Reeves and Hugo Weaving have acted:**
 
    ```cypher
-   MATCH (p1:Person { name: "Keanu Reeves" })-[:ACTED_IN]->(m)<-[:ACTED_IN]-(p2:Person { name: "Hugo Weaving" })
+   MATCH (p1:Person { name: "Keanu Reeves" })-[:ACTED_IN]->(m)<-[:ACTED_IN]-(p2:Person { name: "Hugo Weaving" }) RETURN p1, p2, m
    RETURN m
    ```
 
@@ -182,6 +207,11 @@ This repository contains instructions and files to set up a Neo4j environment us
     RETURN p
     ```
 
+    ```cypher
+    MATCH (p2 { name:'Keanu Reeves' })-[*1..3]-(p), (p1 { name:'Tom Hanks' })-[*1..3]-(p)
+    RETURN p
+    ```
+
 19. **People who have either written or directed a movie released after 1970, including the movies:**
 
     ```cypher
@@ -195,3 +225,7 @@ This repository contains instructions and files to set up a Neo4j environment us
     MATCH (p:Person)-[:ACTED_IN]->(m:Movie)
     RETURN p.name, COUNT(*), COLLECT(m.title)
     ```
+
+```
+
+```
