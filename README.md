@@ -308,7 +308,9 @@ This repository contains instructions and files to set up a Neo4j environment us
 10. **For each category with more than 10 products, find its name and the number of orders involving its products, starting with the category with the most products to the one with the least.**
 
     ```cypher
-
+    MATCH (o:Order)-[r:ORDERS]->(p:Product)-[:PART_OF]->(c:Category)
+    WITH c, COUNT(DISTINCT o) AS numOrders, COUNT(DISTINCT p) AS numProducts
+    WHERE numProducts > 10 RETURN c.categoryName, numProducts, numOrders ORDER BY numProducts DESC
     ```
 
 11. **Find the number of products supplied by each country.**
@@ -320,7 +322,12 @@ This repository contains instructions and files to set up a Neo4j environment us
 12. **Find the pair of customers whose orders include the most different common products. Display the number of products as well.**
 
     ```cypher
-
+    MATCH (c1:Customer)-[:PURCHASED]->(:Order)-[:ORDERS]->(p:Product)<-[:ORDERS]-(:Order)<-[:PURCHASED]-(c2:Customer)
+    WHERE c1 <> c2
+    WITH c1, c2, COUNT(DISTINCT p) AS commonProducts
+    RETURN c1.contactName, c2.contactName, commonProducts
+    ORDER BY commonProducts DESC
+    LIMIT 1
     ```
 
 13. **Find the products that appear together in at least 3 orders.**
@@ -343,9 +350,14 @@ This repository contains instructions and files to set up a Neo4j environment us
 
 15. **Find the shortest path between all pairs of customers, for customers with names (contactName) starting with 'S'. Display the pairs and the length of the path, starting from the shortest path to the longest.**
 
-        ```cypher
-
-        ```
+    ```cypher
+    MATCH p = shortestPath((c1:Customer)-[*]-(c2:Customer))
+    WHERE c1.contactName < c2.contactName //ensures that the "smallest" name will be first and pairs would be unique
+    AND c1.contactName STARTS WITH "S"
+    AND c2.contactName STARTS WITH "S"
+    RETURN DISTINCT c1.contactName, c2.contactName, length(p) AS Length
+    ORDER BY Length
+    ```
 
     <br>
     <br>
