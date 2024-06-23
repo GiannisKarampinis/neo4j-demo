@@ -1,6 +1,6 @@
 # Neo4j Docker Setup
 
-This repository contains instructions and files to set up a Neo4j environment using Docker.
+This repository contains instructions and files to set up a Neo4j environment using Docker. This can be utilized as a quick reference guide or tutorial for anyone interested in refreshing their knowledge in Cypher - Neo4j.
 
 ### Prerequisites
 
