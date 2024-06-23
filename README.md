@@ -370,3 +370,23 @@ The PARTICIPATES_IN relationship can have properties or attributes that specify 
 <br>
 
 ## B. Design the properties' Graph for the following relational Schema
+
+<p align = "justify">
+    Design the property graph for a database that will maintain information about car races. Conider the following:
+    <list>
+        <li>Each car has a unique chassis number, engine type, color, manufacturer, and model.</li>
+        <li>For each driver, we have their full name, date of birth, and nationality.</li>
+        <li>The races have a name, number of laps, and location.</li>
+        <li>Each race is held multiple times, but on different dates.</li>
+        <li>Drivers participate in races using cars. Each driver can participate in many races with the same or a different car for each race, but a car can only be used by one driver. We want to know which car was used by a driver in a particular race.</li>
+        <li>Finally, we want information about the winner of each race and their total time.</li>
+    </list>
+</p>
+
+<br>
+
+![Graph](resources/graph_3.svg)
+
+<br>
+
+![Graph](resources/graph_4.svg)
